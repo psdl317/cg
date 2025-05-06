@@ -1,6 +1,6 @@
 #include <GL/glut.h>
 #include <stdlib.h>
-#include<iostream>
+#include <iostream>
 using namespace std;
 void displayPoint(int x, int y)
 {
@@ -10,25 +10,18 @@ void displayPoint(int x, int y)
     glVertex2i(x, y);
     glEnd();
 }
-float x01, x2, y01, y2;
-int ch,xc,yc,r;
-int flag=true;
+int ch, xc, yc, r;
+int flag = true;
 
-void SimpleLine(float x1, float y1, float x2, float y2) {
+void SimpleLine(float x1, float y1, float x2, float y2)
+{
     float dx, dy, p;
     int i;
     float incx, incy, inc1, inc2;
     float x, y;
-    dx = x2 - x1;
-    dy = y2 - y1;
-    if (dx < 0)
-    {
-        dx = -dx;
-    }
-    if (dy < 0)
-    {
-        dy = -dy;
-    }
+    dx = abs(x2 - x1);
+    dy = abs(y2 - y1);
+    
     incx = 1;
     if (x2 < x1)
     {
@@ -51,14 +44,14 @@ void SimpleLine(float x1, float y1, float x2, float y2) {
         {
             if (p >= 0)
             {
-                x =x+incx;
-                y = y+ incy;
-                p =p+ inc1;
+                x = x + incx;
+                y = y + incy;
+                p = p + inc1;
             }
             else
             {
-                x =x+incx;
-                p =p+ inc2;
+                x = x + incx;
+                p = p + inc2;
             }
             displayPoint(x, y);
         }
@@ -73,27 +66,29 @@ void SimpleLine(float x1, float y1, float x2, float y2) {
         {
             if (p >= 0)
             {
-                x =x+ incx;
-                y =y+ incy;
-                p =p+ inc1;
+                x = x + incx;
+                y = y + incy;
+                p = p + inc1;
             }
             else
             {
-                p=p+inc2;
-                y =y+ incy;
+                p = p + inc2;
+                y = y + incy;
             }
             displayPoint(x, y);
         }
     }
     glFlush();
 }
-void drawCircle(int xc, int yc, int radius) {
+void drawCircle(int xc, int yc, int radius)
+{
     int x = 0;
     int y = radius;
     int p = 3 - 2 * radius;
     glPointSize(1);
     glBegin(GL_POINTS); // Begin drawing points for the circle
-    while (x <= y) {
+    while (x <= y)
+    {
         glVertex2i(xc + x, yc + y);
         glVertex2i(xc + y, yc + x);
         glVertex2i(xc - x, yc + y);
@@ -102,10 +97,13 @@ void drawCircle(int xc, int yc, int radius) {
         glVertex2i(xc - y, yc - x);
         glVertex2i(xc + x, yc - y);
         glVertex2i(xc + y, yc - x);
-        if (p < 0) {
+        if (p < 0)
+        {
             x++;
             p = p + 4 * x + 6;
-        } else {
+        }
+        else
+        {
             x++;
             y--;
             p = p + 4 * (x - y) + 10;
@@ -117,97 +115,86 @@ void myMouse(int button, int state, int x, int y)
 {
     static int xst, yst, pt = 0;
 
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+    {
 
-        if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+        if (ch == 1)
         {
 
-            if(ch==1)
+            if (pt == 0)
             {
+                xst = x;
+                yst = 600 - y;
 
-                if (pt == 0)
-                {
-                    xst = x;
-                    yst = 600-y;
-
-                    pt = pt + 1;
-                }
-                else
-                {
-
-
-
-                    SimpleLine(xst, yst, x, 600-y);
-
-
-                    xst = x;
-                    yst = 600-y;
-
+                pt = pt + 1;
             }
-            }
-            if(ch==2 && flag==true)
+            else
             {
-                xc=x;
-                yc=600-y;
-                flag=false;
+                SimpleLine(xst, yst, x, 600 - y);
 
+                xst = x;
+                yst = 600 - y;
             }
-            else if(ch==2 && flag==false)
-            {
-                r=abs(xc-x);
-                drawCircle(xc,yc,r);
-                flag=true;
-            }
-
+        }
+        if (ch == 2 && flag == true)
+        {
+            xc = x;
+            yc = 600 - y;
+            flag = false;
+        }
+        else if (ch == 2 && flag == false)
+        {
+            r = abs(xc - x);
+            drawCircle(xc, yc, r);
+            flag = true;
+        }
     }
     else if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
     {
         pt = 0;
-
     }
-//Clear Screen
-        glFlush();
+    // Clear Screen
+    glFlush();
 }
-void keyboard(unsigned char key,int x,int y)
+void keyboard(unsigned char key, int x, int y)
 {
-    if(key=='l')//press l for line
+    if (key == 'l') // press l for line
     {
-        ch=1;
+        ch = 1;
         glutMouseFunc(myMouse);
     }
-    if(key=='c')//press c for circle
+    if (key == 'c') // press c for circle
     {
 
-        ch=2;
+        ch = 2;
         glutMouseFunc(myMouse);
     }
-
 }
 void initialize(void)
 {
-glClearColor(1.0, 1.0, 1.0, 1.0);
-glClear(GL_COLOR_BUFFER_BIT);
-// gluOrtho2D(l,r,b,t)
-gluOrtho2D(0, 600, 0, 600);
+    glClearColor(1.0, 1.0, 1.0, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    // gluOrtho2D(l,r,b,t)
+    gluOrtho2D(0, 600, 0, 600);
 }
 void primitives(void)
 {
-//glClearColor(1.0, 1.0, 1.0, 1.0);
-//glClear(GL_COLOR_BUFFER_BIT);
-glColor3f(1, 0, 0);
+    // glClearColor(1.0, 1.0, 1.0, 1.0);
+    // glClear(GL_COLOR_BUFFER_BIT);
+    glColor3f(1, 0, 0);
 
-glutKeyboardFunc(keyboard);
+    glutKeyboardFunc(keyboard);
 }
 
-int main(int argc,char **argv)
+int main(int argc, char **argv)
 {
- glutInit(&argc, argv);
- glutInitDisplayMode(GLUT_SINGLE);
- glutInitWindowPosition(0, 0);
- glutInitWindowSize(600, 600);
- glutCreateWindow("Bresenham's Line and Circle");
- initialize();
-
- glutDisplayFunc(primitives);
- glutMainLoop();
- return 0;
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_SINGLE);
+    glutInitWindowPosition(0, 0);
+    glutInitWindowSize(600, 600);
+    glutCreateWindow("Bresenham's Line and Circle");
+    initialize();
+    glutDisplayFunc(primitives);
+    glutMainLoop();
+    return 0;
 }
