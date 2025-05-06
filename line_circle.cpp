@@ -86,7 +86,7 @@ void drawCircle(int xc, int yc, int radius)
     int y = radius;
     int p = 3 - 2 * radius;
     glPointSize(1);
-    glBegin(GL_POINTS); // Begin drawing points for the circle
+    glBegin(GL_POINTS); 
     while (x <= y)
     {
         glVertex2i(xc + x, yc + y);
@@ -109,7 +109,7 @@ void drawCircle(int xc, int yc, int radius)
             p = p + 4 * (x - y) + 10;
         }
     }
-    glEnd(); // End drawing points for the circle
+    glEnd(); 
 }
 void myMouse(int button, int state, int x, int y)
 {
@@ -153,17 +153,16 @@ void myMouse(int button, int state, int x, int y)
     {
         pt = 0;
     }
-    // Clear Screen
     glFlush();
 }
 void keyboard(unsigned char key, int x, int y)
 {
-    if (key == 'l') // press l for line
+    if (key == 'l') 
     {
         ch = 1;
         glutMouseFunc(myMouse);
     }
-    if (key == 'c') // press c for circle
+    if (key == 'c') 
     {
 
         ch = 2;
@@ -174,13 +173,10 @@ void initialize(void)
 {
     glClearColor(1.0, 1.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
-    // gluOrtho2D(l,r,b,t)
     gluOrtho2D(0, 600, 0, 600);
 }
 void primitives(void)
 {
-    // glClearColor(1.0, 1.0, 1.0, 1.0);
-    // glClear(GL_COLOR_BUFFER_BIT);
     glColor3f(1, 0, 0);
 
     glutKeyboardFunc(keyboard);
