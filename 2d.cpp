@@ -94,13 +94,22 @@ void translate(int tx, int ty) {
 }
 
 void scaling(int sx, int sy) {
+    float cx = 0, cy = 0;
     for (int j = 0; j < n; j++) {
-        scaled_p[j].xc = round(p[j].xc * sx);
-        scaled_p[j].yc = round(p[j].yc * sy);
+        cx += p[j].xc;
+        cy += p[j].yc;
+    }
+    cx /= n;
+    cy /= n;
+
+    for (int j = 0; j < n; j++) {
+        scaled_p[j].xc = round(cx + (p[j].xc - cx) * sx);
+        scaled_p[j].yc = round(cy + (p[j].yc - cy) * sy);
     }
     scaled = true;
     glutPostRedisplay();
 }
+
 
 void menu(int choice) {
     switch (choice) {
